@@ -1,20 +1,18 @@
 <template>
-  <div class="companybox-style">
-
+  <div class="configbox-style">
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Company',
-
+  name: 'ConfigBox',
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.companybox-style {
-  height: 100%;
+.configbox-style {
+  height: 14vh;
   width: 100%;
   background-color: black;
   border-radius: 25px;
