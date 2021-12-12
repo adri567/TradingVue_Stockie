@@ -1,4 +1,4 @@
-# vue_firstproject
+# TradingVue Stockie
 
 ## Project setup
 ```
