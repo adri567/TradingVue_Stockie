@@ -6,24 +6,6 @@
   </div>
 </template>
 
-<style scoped>
-.chartview-sytle {
-  width: 100%;
-  height: 100%;
-  margin: auto;
-  padding: 10px;
-  background-color: aqua; 
-  border-radius: 25px;
-  padding: 30px;
-}
-
-.tradingchart {
-  height: 100%;
-  width: 100%;
-  background-color: antiquewhite;
-}
-</style>
-
 <script>
 import TradingVue from "trading-vue-js";
 import Data from '../data/data.json'
@@ -55,3 +37,21 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.chartview-sytle {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  padding: 10px;
+  background-color: rgb(18,24,38); 
+  border-radius: 25px;
+  padding: 30px;
+  box-shadow: 0 0 1em rgb(7, 16, 34)
+}
+
+.tradingchart {
+  height: 100%;
+  width: 100%;
+ background-color: rgb(18,24,38); 
+}
+</style>

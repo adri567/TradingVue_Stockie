@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-
+      <Header/>
     </div>
     <div class="companybox">
       <Company/>
@@ -18,55 +18,57 @@
 </template>
 
 <script>
-import Chart from './components/Chart.vue'
-import ConfigBox from './components/ConfigBox.vue'
-import Company from './components/Company.vue'
-
+import Chart from "./components/Chart.vue";
+import ConfigBox from "./components/ConfigBox.vue";
+import Company from "./components/Company.vue";
+import Header from "./components/Header.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Chart,
     ConfigBox,
-    Company
-  }
-}
+    Company,
+    Header
+  },
+};
 </script>
 
 <style>
-/* Header */ 
+/* Header */
 .header {
-  background-color: rgb(8, 9, 13);
+  background-color: rgb(18, 24, 38);
   width: 100%;
-  height: 5vh;
+  height: 8vh;
   float: left;
 }
 
-/* Company */ 
+/* Company */
 .companybox {
-  background-color: white;
+  background-color: rgb(29, 39, 61);
   width: 20%;
-  height: 95vh;
+  height: 92vh;
   float: left;
-  padding: 10px;
+  padding: 30px 15px 30px 30px;
+  box-shadow: inset 0px 13px 3px -3px rgba(7, 16, 34, 0.15);
 }
 
-/* Chart */ 
+/* Chart */
 .chart {
-  background-color: white;
+  background-color: rgb(29, 39, 61);
   float: left;
   width: 80%;
-  height: 79vh;
-  padding: 10px; 
+  height: 77vh;
+  padding: 30px 30px 15px 30px;
+  box-shadow: inset 0px 13px 3px -3px rgba(7, 16, 34, 0.15);
 }
 
-/* Time */ 
+/* Time */
 .configbox {
-  background-color: white;
+  background-color: rgb(29, 39, 61);
   float: left;
   width: 80%;
-  height: 16vh;
-  padding: 10px;
+  height: 15vh;
+  padding: 15px 30px 30px 30px;
 }
-
 </style>
