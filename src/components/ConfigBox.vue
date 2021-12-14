@@ -30,6 +30,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .configbox-style {
+  
   height: 11.5vh;
   padding: 4vh;
   width: 100%;
