@@ -226,6 +226,5 @@ export default {
   color: rgb(196,196,196);
   font-family: 'Arial';
   font-size: 0.9vw;
-  
 }
 </style>
