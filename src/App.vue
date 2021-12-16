@@ -22,7 +22,10 @@ import Chart from "./components/Chart.vue";
 import ConfigBox from "./components/ConfigBox.vue";
 import Company from "./components/Company.vue";
 import Header from "./components/Header.vue";
+import {data} from './data/data.js';
 
+
+console.log(data);
 export default {
   name: "App",
   components: {
