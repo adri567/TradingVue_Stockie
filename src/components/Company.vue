@@ -2,10 +2,10 @@
   <div class="companybox-style">
     <div class="search">
       <b-input-group size="sm" class="mb-2">
-        <b-input-group-prepend is-text>
+        <b-input-group-prepend is-text v-on:click="getData">
           <b-icon icon="search"></b-icon>
         </b-input-group-prepend>
-        <b-form-input type="search" placeholder="Search shares"></b-form-input>
+        <b-form-input type="search" v-model="asset" placeholder="Search shares" ></b-form-input>
       </b-input-group>
     </div>
     <div class="iconAndCompanyBox">
@@ -13,7 +13,7 @@
         <img src="../assets/apple.png" style="height: 100%; width:100%; border-radius:100px;">
       </div>
       <div class="companyAbbreviation">
-        AAPL
+        {{ asset }}
       </div>
       <div class="company">
         Apple Inc.
@@ -50,20 +50,44 @@
       </div>
     </div>
     <div class="information">
-      Apple Inc. is an American multinational technology company that specializes in consumer electronics, 
-      computer software, and online services. Apple is the world's largest technology company by revenue 
-      (totalling $274.5 billion in 2020) and, since January 2021, the world's most valuable company. 
-      As of 2021, Apple is the world's fourth-largest PC vendor by unit sales, and fourth-largest smartphone manufacturer. 
-      It is one of the Big Five American information technology companies, along with Amazon, Google, Microsoft, and Facebook.
+      {{description}}
     </div>
   </div>
 </template>
 
 <script>
+import { assetData } from '../data/data.js';
+import { getDescriptionFromAsset } from '../data/data.js';
 
 export default {
   name: 'Company',
-
+  data () {
+    return {
+      chartData: [],
+      asset: '',
+      description: ''
+    }
+  },
+  methods: {
+    getData() {
+      this.fillDescription();
+      Promise.resolve(assetData).then((resolvedData) => {
+        this.chartData = resolvedData;
+        console.log(this.chartData);
+      }, function(e) {
+          console.error(e);
+      });
+    },
+    fillDescription() {
+      Promise.resolve(getDescriptionFromAsset(this.asset)).then((assetDescription) => {
+        this.description = assetDescription;
+      }, function(e) {
+          console.error(e);
+      });
+    },
+  },
+  mounted() {
+  }
 }
 </script>
 
@@ -218,7 +242,7 @@ export default {
   float: left;
 }
 .information {
-  height: 30%;
+  height: 60%;
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
@@ -226,5 +250,11 @@ export default {
   color: rgb(196,196,196);
   font-family: 'Arial';
   font-size: 0.9vw;
+  overflow-y: scroll;
+  text-align: justify;
+}
+
+.information::-webkit-scrollbar {
+    display: none;
 }
 </style>

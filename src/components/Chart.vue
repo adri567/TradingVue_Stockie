@@ -12,7 +12,9 @@ import Data from '../data/data.json'
 
 export default {
   name: "TradingView",
-  components: { TradingVue },
+  components: { 
+    TradingVue 
+  },
   methods: {
     onResize() {
       this.width = document.querySelector('.tradingchart').clientWidth;

@@ -10,6 +10,6 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
 
-new Vue({
+export const bus = new Vue({
   render: h => h(App),
 }).$mount('#app')
