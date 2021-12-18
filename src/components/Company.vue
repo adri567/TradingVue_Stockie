@@ -5,94 +5,100 @@
         <b-input-group-prepend is-text v-on:click="getData">
           <b-icon icon="search"></b-icon>
         </b-input-group-prepend>
-        <b-form-input type="search" v-model="asset" placeholder="Search shares" ></b-form-input>
+        <b-form-input
+          type="search"
+          v-model="asset"
+          placeholder="Search shares"
+        ></b-form-input>
       </b-input-group>
     </div>
     <div class="iconAndCompanyBox">
       <div class="icon">
-        <img src="../assets/apple.png" style="height: 100%; width:100%; border-radius:100px;">
+        <img
+          src="../assets/apple.png"
+          style="height: 100%; width: 100%; border-radius: 100px"
+        />
       </div>
       <div class="companyAbbreviation">
         {{ asset }}
       </div>
-      <div class="company">
-        Apple Inc.
-      </div>
+      <div class="company">Apple Inc.</div>
     </div>
     <div class="priceBox">
-      <div class="price">
-        144.84
-      </div>
-      <div class="currency">
-        USD
-      </div>
+      <div class="price">144.84</div>
+      <div class="currency">USD</div>
     </div>
     <div class="sectorbox">
-      <div class="sector">
-        TECHNOLOGY
-      </div>
-      <div class="point">
-        •
-      </div>
-      <div class="industry">
-        ELECTRONIC COMPUTERS
-      </div>
+      <div class="sector">TECHNOLOGY</div>
+      <div class="point">•</div>
+      <div class="industry">ELECTRONIC COMPUTERS</div>
     </div>
-    <div class="profil">
-      Profil
-    </div>
+    <div class="profil">Profil</div>
     <div class="webseitebox">
-      <div class="webseitename">
-        Webseite
-      </div>
-      <div class="webseitecompany">
-        www.apple.com
-      </div>
+      <div class="webseitename">Webseite</div>
+      <div class="webseitecompany">www.apple.com</div>
     </div>
     <div class="information">
-      {{description}}
+      {{ description }}
     </div>
   </div>
 </template>
 
 <script>
-import { assetData } from '../data/data.js';
-import { getDescriptionFromAsset } from '../data/data.js';
-import eventBus from '../main.js'
+import { getChartDataFromAsset } from "../data/data.js";
+import { getDescriptionFromAsset } from "../data/data.js";
+import eventBus from "../main.js";
 
 export default {
-  name: 'Company',
-  data () {
+  name: "Company",
+  data() {
     return {
       chartData: [],
-      asset: '',
-      description: ''
-    }
+      asset: "",
+      description: "",
+    };
   },
   methods: {
     deliverChartData() {
-      eventBus.$emit('chartData', this.chartData)
+      eventBus.$emit("chartData", this.chartData, this.asset);
     },
     getData() {
-      this.fillDescription();
-      Promise.resolve(assetData).then((resolvedData) => {
-        this.chartData = resolvedData;
-        this.deliverChartData();
-      }, function(e) {
-          console.error(e);
-      });
+      if (this.asset == "") {
+        const modal = document.getElementById("myModal");
+        modal.style.display = "block";
+      } else {
+        this.fillDescription();
+        Promise.resolve(getChartDataFromAsset(this.asset)).then(
+          (resolvedData) => {
+            this.chartData = resolvedData;
+            this.deliverChartData();
+          },
+          function (e) {
+            console.error(e);
+          }
+        );
+      }
     },
     fillDescription() {
-      Promise.resolve(getDescriptionFromAsset(this.asset)).then((assetDescription) => {
-        this.description = assetDescription;
-      }, function(e) {
+      Promise.resolve(getDescriptionFromAsset(this.asset)).then(
+        (assetDescription) => {
+          this.description = assetDescription;
+        },
+        function (e) {
           console.error(e);
-      });
+        }
+      );
     },
   },
-  mounted() {
-  }
-}
+};
+const modal = document.getElementById("myModal");
+    window.onclick = function (event) {
+      console.log("close");
+      if (event.target == modal) {
+        console.log("close");
+        modal.style.display = "none";
+      }
+    };
 </script>
 
 
@@ -101,7 +107,7 @@ export default {
 .companybox-style {
   height: 87vh;
   width: 100%;
-  background-color: rgb(18,24,38); 
+  background-color: rgb(18, 24, 38);
   border-radius: 25px;
   box-shadow: 0 0 1em rgb(7, 16, 34);
 }
@@ -130,20 +136,20 @@ export default {
   height: 100%;
   float: left;
   margin-left: 10%;
-  display: flex; 
+  display: flex;
   align-items: center;
-  color: rgb(196,196,196);
-  font-family: 'Arial';
+  color: rgb(196, 196, 196);
+  font-family: "Arial";
   font-size: 1.5vw;
 }
-.company{
+.company {
   height: 100%;
   float: left;
   margin-left: 5%;
-  display: flex; 
+  display: flex;
   align-items: center;
-  color: rgb(196,196,196);
-  font-family: 'Arial';
+  color: rgb(196, 196, 196);
+  font-family: "Arial";
   font-size: 0.7vw;
   margin-top: 2%;
 }
@@ -158,24 +164,23 @@ export default {
 .price {
   height: 100%;
   float: left;
-  display: flex; 
+  display: flex;
   align-items: center;
-  color: rgb(196,196,196);
-  font-family: 'Arial';
+  color: rgb(196, 196, 196);
+  font-family: "Arial";
   font-size: 1.5vw;
-
 }
 .currency {
   height: 100%;
   float: left;
-  display: flex; 
+  display: flex;
   align-items: center;
-  color: rgb(196,196,196);
-  font-family: 'Arial';
+  color: rgb(196, 196, 196);
+  font-family: "Arial";
   margin-left: 2%;
   margin-top: 1%;
 }
-.sectorbox{
+.sectorbox {
   height: 5%;
   width: 90%;
   margin-left: 5%;
@@ -185,10 +190,10 @@ export default {
 .sector {
   height: 50%;
   float: left;
-  display: flex; 
+  display: flex;
   align-items: center;
-  color: rgb(196,196,196);
-  font-family: 'Arial';
+  color: rgb(196, 196, 196);
+  font-family: "Arial";
   font-size: 0.6vw;
 }
 .point {
@@ -196,8 +201,8 @@ export default {
   float: left;
   display: flex;
   align-items: center;
-  color: rgb(196,196,196);
-  font-family: 'Arial';
+  color: rgb(196, 196, 196);
+  font-family: "Arial";
   font-size: 0.6vw;
   margin-left: 2%;
   margin-right: 2%;
@@ -205,10 +210,10 @@ export default {
 .industry {
   height: 50%;
   float: left;
-  display: flex; 
+  display: flex;
   align-items: center;
-  color: rgb(196,196,196);
-  font-family: 'Arial';
+  color: rgb(196, 196, 196);
+  font-family: "Arial";
   font-size: 0.6vw;
 }
 .profil {
@@ -216,8 +221,8 @@ export default {
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
-  color: rgb(196,196,196);
-  font-family: 'Arial';
+  color: rgb(196, 196, 196);
+  font-family: "Arial";
   font-size: 1.5vw;
   float: left;
 }
@@ -230,8 +235,8 @@ export default {
 .webseitename {
   height: 100%;
   width: 50%;
-  color: rgb(196,196,196);
-  font-family: 'Arial';
+  color: rgb(196, 196, 196);
+  font-family: "Arial";
   font-size: 0.7vw;
   text-align: left;
   float: left;
@@ -239,8 +244,8 @@ export default {
 .webseitecompany {
   height: 100%;
   width: 50%;
-  color: rgb(196,196,196);
-  font-family: 'Arial';
+  color: rgb(196, 196, 196);
+  font-family: "Arial";
   font-size: 0.7vw;
   text-align: right;
   float: left;
@@ -251,14 +256,14 @@ export default {
   margin-left: 5%;
   margin-right: 5%;
   float: left;
-  color: rgb(196,196,196);
-  font-family: 'Arial';
+  color: rgb(196, 196, 196);
+  font-family: "Arial";
   font-size: 0.9vw;
   overflow-y: scroll;
   text-align: justify;
 }
 
 .information::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 </style>
