@@ -9,24 +9,13 @@
 <script>
 import TradingVue from "trading-vue-js";
 import Data from '../data/data.json'
+import eventBus from '../main.js'
+
 
 export default {
   name: "TradingView",
   components: { 
     TradingVue 
-  },
-  methods: {
-    onResize() {
-      this.width = document.querySelector('.tradingchart').clientWidth;
-      this.height = document.querySelector('.tradingchart').clientHeight;
-    }
-  },
-  mounted() {
-      window.addEventListener('resize', this.onResize);
-      this.onResize();
-  },
-  beforeDestroy() {
-        window.removeEventListener('resize', this.onResize);
   },
   data() {
     return {
@@ -35,7 +24,35 @@ export default {
       height: window.innerHeight,
     };
   },
+  methods: {
+    parseJson(chartData) {
+      var json = '{"chart": {"data": [], "settings": {	"color": "#1baddd"},"grid": {}}}'
+      var arr = JSON.parse(json)
+      arr.chart.data = chartData;
+      console.log("own", arr)
+      console.log("old", Data)
+      this.chart = arr;
+    },
+    onResize() {
+      this.width = document.querySelector('.tradingchart').clientWidth;
+      this.height = document.querySelector('.tradingchart').clientHeight;
+    }
+  },
+  beforeMount() {
+    eventBus.$on('chartData', (data) => {
+      this.parseJson(data);
+    })
+  },
+  mounted() {
+      window.addEventListener('resize', this.onResize);
+      this.onResize();
+  },
+  beforeDestroy() {
+        window.removeEventListener('resize', this.onResize);
+  },
 };
+
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

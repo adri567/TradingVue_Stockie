@@ -58,6 +58,7 @@
 <script>
 import { assetData } from '../data/data.js';
 import { getDescriptionFromAsset } from '../data/data.js';
+import eventBus from '../main.js'
 
 export default {
   name: 'Company',
@@ -69,11 +70,14 @@ export default {
     }
   },
   methods: {
+    deliverChartData() {
+      eventBus.$emit('chartData', this.chartData)
+    },
     getData() {
       this.fillDescription();
       Promise.resolve(assetData).then((resolvedData) => {
         this.chartData = resolvedData;
-        console.log(this.chartData);
+        this.deliverChartData();
       }, function(e) {
           console.error(e);
       });

@@ -4,12 +4,17 @@ import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
 
+
+const eventBus = new Vue()
+
+export default eventBus
+
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
 
-export const bus = new Vue({
+new Vue({
   render: h => h(App),
 }).$mount('#app')
