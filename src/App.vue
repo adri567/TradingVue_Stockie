@@ -1,18 +1,18 @@
 <template>
   <div>
-    <ModalBox/>
+    <!--<ModalBox/>-->
     <div class="header">
-      <Header/>
+      <Header />
     </div>
     <div class="companybox">
-      <Company/>
+      <Company />
     </div>
     <div class="chart">
-      <Chart/>
+      <Chart />
     </div>
     <div class="configbox">
       <div class="timebox">
-        <ConfigBox/>
+        <ConfigBox />
       </div>
     </div>
   </div>
@@ -23,7 +23,7 @@ import Chart from "./components/Chart.vue";
 import ConfigBox from "./components/ConfigBox.vue";
 import Company from "./components/Company.vue";
 import Header from "./components/Header.vue";
-import ModalBox from "./components/ModalBox.vue";
+//import ModalBox from "./components/ModalBox.vue";
 
 export default {
   name: "App",
@@ -32,8 +32,7 @@ export default {
     ConfigBox,
     Company,
     Header,
-    ModalBox
-  }
+  },
 };
 </script>
 

@@ -8,45 +8,78 @@
         <b-form-input
           type="search"
           v-model="asset"
-          placeholder="Search shares"
+          placeholder="Search asset"
         ></b-form-input>
       </b-input-group>
+    </div>
+    <div class="alertAsset">
+      <div
+        class="alert alert-primary"
+        v-if="assetSearchError"
+        role="alert"
+        style="
+          background-color: rgb(29, 39, 61);
+          border-color: rgb(29, 39, 61);
+          color: white;
+        "
+      >
+        {{ assetSearchErrorMessage }}
+      </div>
     </div>
     <div class="iconAndCompanyBox">
       <div class="icon">
         <img
-          src="../assets/apple.png"
-          style="height: 100%; width: 100%; border-radius: 100px"
+          :src="assetImage"
+          style="
+            height: 100%;
+            width: 100%;
+            background-color: white;
+            border-radius: 100px;
+          "
         />
       </div>
       <div class="companyAbbreviation">
-        {{ asset }}
+        <!--{{ assetUppercase }} -->
       </div>
-      <div class="company">Apple Inc.</div>
+      <div class="company">
+        {{ assetInformation["name"] }}
+      </div>
     </div>
     <div class="priceBox">
-      <div class="price">144.84</div>
-      <div class="currency">USD</div>
+      <div class="price">
+        {{ assetInformation["price"] }}
+      </div>
+      <div class="currency">
+        {{ assetInformation["currency"] }}
+      </div>
     </div>
     <div class="sectorbox">
-      <div class="sector">TECHNOLOGY</div>
+      <div class="sector">
+        {{ assetInformation["sector"] }}
+      </div>
       <div class="point">•</div>
-      <div class="industry">ELECTRONIC COMPUTERS</div>
+      <div class="industry">
+        {{ assetInformation["industry"] }}
+      </div>
     </div>
     <div class="profil">Profil</div>
     <div class="webseitebox">
       <div class="webseitename">Webseite</div>
-      <div class="webseitecompany">www.apple.com</div>
+      <div class="webseitecompany">
+        <a :href="assetInformation['website']" target="_blank">{{
+          assetInformation["website"]
+        }}</a>
+      </div>
     </div>
-    <div class="information">
-      {{ description }}
+    <div class="information" v-bind:style="{ height: assetInfoHeight }">
+      {{ assetInformation["description"] }}
     </div>
   </div>
 </template>
 
 <script>
 import { getChartDataFromAsset } from "../data/data.js";
-import { getDescriptionFromAsset } from "../data/data.js";
+import { getAssetInformation } from "../data/data.js";
 import eventBus from "../main.js";
 
 export default {
@@ -55,50 +88,86 @@ export default {
     return {
       chartData: [],
       asset: "",
-      description: "",
+      availableAssets: ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN"],
+      assetInfoHeight: "60%",
+      assetInformation: "",
+      assetImage: "",
+      assetSearchError: false,
+      assetSearchErrorMessage: "",
+      period: "",
     };
+  },
+  computed: {
+    assetUppercase: function () {
+      return this.asset.toUpperCase();
+    },
   },
   methods: {
     deliverChartData() {
       eventBus.$emit("chartData", this.chartData, this.asset);
     },
     getData() {
-      if (this.asset == "") {
-        const modal = document.getElementById("myModal");
-        modal.style.display = "block";
+      if (this.assetUppercase == "") {
+        this.changeHeightFromInfo("55%");
+        this.assetSearchError = true;
+        this.assetSearchErrorMessage =
+          "Please enter a asset to show a new chart.";
+      } else if (!this.availableAssets.includes(this.assetUppercase)) {
+        this.changeHeightFromInfo("55%");
+        this.assetSearchError = true;
+        this.assetSearchErrorMessage =
+          "Available assets: AAPL, MSFT, NVDA, TSLA, AMZN";
       } else {
-        this.fillDescription();
-        Promise.resolve(getChartDataFromAsset(this.asset)).then(
-          (resolvedData) => {
-            this.chartData = resolvedData;
-            this.deliverChartData();
-          },
-          function (e) {
-            console.error(e);
-          }
-        );
+        this.changeHeightFromInfo("60%");
+        this.assetSearchError = false;
+        this.fillDescription(this.assetUppercase);
+        this.getAssetData(this.assetUppercase);
       }
     },
-    fillDescription() {
-      Promise.resolve(getDescriptionFromAsset(this.asset)).then(
-        (assetDescription) => {
-          this.description = assetDescription;
+    changeHeightFromInfo(height) {
+      this.assetInfoHeight = height;
+    },
+    getAssetData(asset) {
+      Promise.resolve(getChartDataFromAsset(asset)).then(
+        (resolvedData) => {
+          this.chartData = resolvedData;
+          this.deliverChartData();
         },
         function (e) {
           console.error(e);
         }
       );
     },
+    fillDescription(asset) {
+      Promise.resolve(getAssetInformation(asset)).then(
+        (information) => {
+          this.assetInformation = information;
+          this.binaryDataToImage();
+        },
+        function (e) {
+          console.error(e);
+        }
+      );
+    },
+    binaryDataToImage() {
+      const base64 =
+        "data:image/jpeg;base64," +
+        Buffer.from(this.assetInformation["logo"], "base64").toString("ascii");
+      this.assetImage = base64;
+    },
+  },
+  mounted() {
+    console.log("test");
+    this.fillDescription("AAPL");
+    this.getAssetData("AAPL");
+  },
+  beforeMount() {
+    eventBus.$on("period", (period) => {
+      this.period = period;
+      console.log(this.period);
+    });
   },
 };
-const modal = document.getElementById("myModal");
-    window.onclick = function (event) {
-      console.log("close");
-      if (event.target == modal) {
-        console.log("close");
-        modal.style.display = "none";
-      }
-    };
 </script>
 
 
@@ -119,13 +188,19 @@ const modal = document.getElementById("myModal");
   margin-top: 10%;
   float: left;
 }
+.alertAsset {
+  height: auto;
+  float: left;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
 .iconAndCompanyBox {
   height: 5%;
   width: 90%;
   float: left;
   margin-left: 5%;
   margin-right: 5%;
-  margin-top: 5%;
 }
 .icon {
   height: 100%;
@@ -150,8 +225,7 @@ const modal = document.getElementById("myModal");
   align-items: center;
   color: rgb(196, 196, 196);
   font-family: "Arial";
-  font-size: 0.7vw;
-  margin-top: 2%;
+  font-size: 1.5vw;
 }
 .priceBox {
   height: 5%;
@@ -231,6 +305,7 @@ const modal = document.getElementById("myModal");
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
+  float: left;
 }
 .webseitename {
   height: 100%;
@@ -251,7 +326,8 @@ const modal = document.getElementById("myModal");
   float: left;
 }
 .information {
-  height: 60%;
+  height: auto;
+  max-height: 60%;
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;

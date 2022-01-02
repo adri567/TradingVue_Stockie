@@ -28,7 +28,7 @@ export default {
       width: window.innerWidth,
       height: window.innerHeight,
       rerenderChart: true,
-      asset: ''
+      asset: "",
     };
   },
   methods: {
@@ -61,6 +61,7 @@ export default {
 
       arr.chart.data = newChartData;
       this.chart = arr;
+      console.log(this.chart);
       this.forceRerender();
     },
     onResize() {
