@@ -5,7 +5,7 @@ export { getAssetInformation };
 
 async function getChartDataFromAsset(asset) {
     var data;
-    var response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/all');
+    var response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/7');
     data = response.data;
     return data;
 }

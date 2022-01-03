@@ -27,52 +27,84 @@
       </div>
     </div>
     <div class="iconAndCompanyBox">
-      <div class="icon">
-        <img
-          :src="assetImage"
-          style="
-            height: 100%;
-            width: 100%;
-            background-color: white;
-            border-radius: 100px;
-          "
-        />
-      </div>
-      <div class="companyAbbreviation">
-        <!--{{ assetUppercase }} -->
-      </div>
-      <div class="company">
-        {{ assetInformation["name"] }}
-      </div>
+      <b-skeleton-wrapper :loading="loading">
+        <template #loading>
+          <b-skeleton animation="wave"> </b-skeleton>
+        </template>
+        <div class="icon">
+          <img
+            :src="assetImage"
+            style="
+              height: 100%;
+              width: 100%;
+              background-color: white;
+              border-radius: 100px;
+            "
+          />
+        </div>
+        <div class="companyAbbreviation">
+          <!--{{ assetUppercase }} -->
+        </div>
+        <div class="company">
+          {{ assetInformation["name"] }}
+        </div>
+      </b-skeleton-wrapper>
     </div>
     <div class="priceBox">
-      <div class="price">
-        {{ assetInformation["price"] }}
-      </div>
-      <div class="currency">
-        {{ assetInformation["currency"] }}
-      </div>
+      <b-skeleton-wrapper :loading="loading">
+        <template #loading>
+          <b-skeleton animation="wave"> </b-skeleton>
+        </template>
+        <div class="price">
+          {{ assetInformation["price"] }}
+        </div>
+        <div class="currency">
+          {{ assetInformation["currency"] }}
+        </div>
+      </b-skeleton-wrapper>
     </div>
     <div class="sectorbox">
-      <div class="sector">
-        {{ assetInformation["sector"] }}
-      </div>
-      <div class="point">•</div>
-      <div class="industry">
-        {{ assetInformation["industry"] }}
-      </div>
+      <b-skeleton-wrapper :loading="loading">
+        <template #loading>
+          <b-skeleton animation="wave"> </b-skeleton>
+        </template>
+        <div class="sector">
+          {{ assetInformation["sector"] }}
+        </div>
+        <div class="point">•</div>
+        <div class="industry">
+          {{ assetInformation["industry"] }}
+        </div>
+      </b-skeleton-wrapper>
     </div>
-    <div class="profil">Profil</div>
+    <div class="profil">
+      <b-skeleton-wrapper :loading="loading">
+        <template #loading>
+          <b-skeleton animation="wave"></b-skeleton>
+        </template>
+        Profil
+      </b-skeleton-wrapper>
+    </div>
     <div class="webseitebox">
-      <div class="webseitename">Webseite</div>
-      <div class="webseitecompany">
-        <a :href="assetInformation['website']" target="_blank">{{
-          assetInformation["website"]
-        }}</a>
-      </div>
+      <b-skeleton-wrapper :loading="loading">
+        <template #loading>
+          <b-skeleton animation="wave"> </b-skeleton>
+        </template>
+        <div class="webseitename">Webseite</div>
+        <div class="webseitecompany">
+          <a :href="assetInformation['website']" target="_blank">{{
+            assetInformation["website"]
+          }}</a>
+        </div>
+      </b-skeleton-wrapper>
     </div>
     <div class="information" v-bind:style="{ height: assetInfoHeight }">
-      {{ assetInformation["description"] }}
+      <b-skeleton-wrapper :loading="loading">
+        <template #loading>
+          <b-skeleton animation="wave" height="50vh"></b-skeleton>
+        </template>
+        {{ assetInformation["description"] }}
+      </b-skeleton-wrapper>
     </div>
   </div>
 </template>
@@ -95,12 +127,38 @@ export default {
       assetSearchError: false,
       assetSearchErrorMessage: "",
       period: "",
+      loading: false,
+      loadingTime: 0,
+      maxLoadingTime: 3,
     };
   },
   computed: {
     assetUppercase: function () {
       return this.asset.toUpperCase();
     },
+  },
+  watch: {
+    loading(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.clearLoadingTimeInterval();
+
+        if (newValue) {
+          this.$_loadingTimeInterval = setInterval(() => {
+            this.loadingTime++;
+          }, 1000);
+        }
+      }
+    },
+    loadingTime(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (newValue === this.maxLoadingTime) {
+          this.loading = false;
+        }
+      }
+    },
+  },
+  created() {
+    this.$_loadingTimeInterval = null;
   },
   methods: {
     deliverChartData() {
@@ -155,9 +213,17 @@ export default {
         Buffer.from(this.assetInformation["logo"], "base64").toString("ascii");
       this.assetImage = base64;
     },
+    clearLoadingTimeInterval() {
+      clearInterval(this.$_loadingTimeInterval);
+      this.$_loadingTimeInterval = null;
+    },
+    startLoading() {
+      this.loading = true;
+      this.loadingTime = 0;
+    },
   },
   mounted() {
-    console.log("test");
+    this.startLoading();
     this.fillDescription("AAPL");
     this.getAssetData("AAPL");
   },
@@ -226,6 +292,7 @@ export default {
   color: rgb(196, 196, 196);
   font-family: "Arial";
   font-size: 1.5vw;
+  width: 5%;
 }
 .priceBox {
   height: 5%;
