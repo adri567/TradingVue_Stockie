@@ -23,7 +23,6 @@ import Chart from "./components/Chart.vue";
 import ConfigBox from "./components/ConfigBox.vue";
 import Company from "./components/Company.vue";
 import Header from "./components/Header.vue";
-//import ModalBox from "./components/ModalBox.vue";
 
 export default {
   name: "App",

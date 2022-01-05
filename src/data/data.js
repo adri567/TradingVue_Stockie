@@ -3,9 +3,29 @@ const axios = require('axios');
 export { getChartDataFromAsset };
 export { getAssetInformation };
 
-async function getChartDataFromAsset(asset) {
+async function getChartDataFromAsset(asset, period) {
+    console.log(period);
     var data;
-    var response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/7');
+    var response;
+
+    switch (period) {
+        case 1:
+            response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/' + period + '');
+            break;
+        case 5:
+            response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/' + period + '');
+            break;
+        case 30:
+            response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/' + period + '');
+            break;
+        case "all":
+            response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/' + period + '');
+            break;
+        default:
+            response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/3');
+            break;
+    }
+
     data = response.data;
     return data;
 }

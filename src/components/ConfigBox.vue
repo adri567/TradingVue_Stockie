@@ -31,6 +31,7 @@
         <b-button v-on:click="assetPeriod" class="buttonOpinion" value="30"
           >1M</b-button
         >
+        <!--
         <b-button v-on:click="assetPeriod" class="buttonOpinion" value="90"
           >3M</b-button
         >
@@ -43,6 +44,7 @@
         <b-button v-on:click="assetPeriod" class="buttonOpinion" value="1825"
           >5Y</b-button
         >
+        -->
         <b-button v-on:click="assetPeriod" class="buttonOpinion" value="all"
           >All</b-button
         >

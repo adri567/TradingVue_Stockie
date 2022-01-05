@@ -101,7 +101,7 @@
     <div class="information" v-bind:style="{ height: assetInfoHeight }">
       <b-skeleton-wrapper :loading="loading">
         <template #loading>
-          <b-skeleton animation="wave" height="50vh"></b-skeleton>
+          <b-skeleton animation="wave" height="50vh" ></b-skeleton>
         </template>
         {{ assetInformation["description"] }}
       </b-skeleton-wrapper>
@@ -126,7 +126,7 @@ export default {
       assetImage: "",
       assetSearchError: false,
       assetSearchErrorMessage: "",
-      period: "",
+      period: "3",
       loading: false,
       loadingTime: 0,
       maxLoadingTime: 3,
@@ -179,14 +179,14 @@ export default {
         this.changeHeightFromInfo("60%");
         this.assetSearchError = false;
         this.fillDescription(this.assetUppercase);
-        this.getAssetData(this.assetUppercase);
+        this.getAssetData(this.assetUppercase, this.period);
       }
     },
     changeHeightFromInfo(height) {
       this.assetInfoHeight = height;
     },
-    getAssetData(asset) {
-      Promise.resolve(getChartDataFromAsset(asset)).then(
+    getAssetData(asset, period) {
+      Promise.resolve(getChartDataFromAsset(asset, period)).then(
         (resolvedData) => {
           this.chartData = resolvedData;
           this.deliverChartData();
@@ -225,12 +225,11 @@ export default {
   mounted() {
     this.startLoading();
     this.fillDescription("AAPL");
-    this.getAssetData("AAPL");
+    this.getAssetData("AAPL", this.period);
   },
   beforeMount() {
     eventBus.$on("period", (period) => {
       this.period = period;
-      console.log(this.period);
     });
   },
 };
