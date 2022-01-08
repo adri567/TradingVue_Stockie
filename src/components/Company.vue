@@ -101,7 +101,7 @@
     <div class="information" v-bind:style="{ height: assetInfoHeight }">
       <b-skeleton-wrapper :loading="loading">
         <template #loading>
-          <b-skeleton animation="wave" height="50vh" ></b-skeleton>
+          <b-skeleton animation="wave" height="50vh"></b-skeleton>
         </template>
         {{ assetInformation["description"] }}
       </b-skeleton-wrapper>
@@ -119,6 +119,7 @@ export default {
   data() {
     return {
       chartData: [],
+      indicators: [],
       asset: "",
       availableAssets: ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN"],
       assetInfoHeight: "60%",
@@ -162,7 +163,7 @@ export default {
   },
   methods: {
     deliverChartData() {
-      eventBus.$emit("chartData", this.chartData, this.asset);
+      eventBus.$emit("chartData", this.chartData, this.asset, this.indicators);
     },
     getData() {
       if (this.assetUppercase == "") {
@@ -188,7 +189,8 @@ export default {
     getAssetData(asset, period) {
       Promise.resolve(getChartDataFromAsset(asset, period)).then(
         (resolvedData) => {
-          this.chartData = resolvedData;
+          this.chartData = resolvedData[0];
+          this.indicators = resolvedData[1];
           this.deliverChartData();
         },
         function (e) {

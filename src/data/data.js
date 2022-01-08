@@ -4,30 +4,33 @@ export { getChartDataFromAsset };
 export { getAssetInformation };
 
 async function getChartDataFromAsset(asset, period) {
-    console.log(period);
-    var data;
-    var response;
-
+    var dataForChart, dataForIndicators, chartData, indicators;
     switch (period) {
-        case 1:
-            response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/' + period + '');
+        case "1":
+            chartData = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/' + period + '');
+            indicators = await axios('http://185.188.250.67:4567/assets/' + asset + '/indicators/sma/days/' + period + '');
             break;
-        case 5:
-            response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/' + period + '');
+        case "5":
+            chartData = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/' + period + '');
+            indicators = await axios('http://185.188.250.67:4567/assets/' + asset + '/indicators/sma/days/' + period + '');
             break;
-        case 30:
-            response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/' + period + '');
+        case "30":
+            chartData = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/' + period + '');
+            indicators = await axios('http://185.188.250.67:4567/assets/' + asset + '/indicators/sma/days/' + period + '');
             break;
         case "all":
-            response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/' + period + '');
+            chartData = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/' + period + '');
+            indicators = await axios('http://185.188.250.67:4567/assets/' + asset + '/indicators/sma/days/' + period + '');
             break;
         default:
-            response = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/3');
+            chartData = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/3');
+            indicators = await axios('http://185.188.250.67:4567/assets/' + asset + '/indicators/sma/days/3');
             break;
     }
 
-    data = response.data;
-    return data;
+    dataForChart = chartData.data;
+    dataForIndicators = indicators.data;
+    return [dataForChart, dataForIndicators];
 }
 
 async function getAssetInformation(asset) {

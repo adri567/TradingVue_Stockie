@@ -7,6 +7,7 @@
         :width="width"
         :height="height"
         :title-txt="asset"
+        :overlays="overlays"
       ></trading-vue>
     </div>
   </div>
@@ -16,6 +17,7 @@
 import TradingVue from "trading-vue-js";
 import Data from "../data/data.json";
 import eventBus from "../main.js";
+import Overlay from '../Overlay.vue'
 
 export default {
   name: "TradingView",
@@ -25,6 +27,7 @@ export default {
   data() {
     return {
       chart: Data,
+      overlays: [Overlay],
       width: window.innerWidth,
       height: window.innerHeight,
       rerenderChart: true,
@@ -42,26 +45,35 @@ export default {
         this.rerenderChart = true;
       });
     },
-    parseJson(chartData) {
+    parseJson(chartData, indicators) {
       var json =
-        '{"chart": {"data": [],"settings": {"color": "#1baddd"},"grid": { }}}';
+        '{ "chart": {"data": [],"settings": {"color": "#1baddd"},"grid": { }}, "onchart": [ { "name": "Overlay, 50", "type": "Overlay", "data": [], "settings": { "upper": 70, "lower": 30, "backColor": "#9b9ba316", "bandColor": "#666"}}]}';
       var arr = JSON.parse(json);
 
       var newChartData = [];
       for (const el of chartData) {
-        var data = [];
-        data.push(el.date);
-        data.push(el.open);
-        data.push(el.high);
-        data.push(el.low);
-        data.push(el.close);
-        data.push(el.volume);
-        newChartData.push(data);
+        var cData = [];
+        cData.push(el.date);
+        cData.push(el.open);
+        cData.push(el.high);
+        cData.push(el.low);
+        cData.push(el.close);
+        cData.push(el.volume);
+        newChartData.push(cData);
+      }
+
+      var newIndicatorData = [];
+      for (const el of indicators) {
+        var iData = [];
+        iData.push(el.timestamp);
+        iData.push(el.value);
+        newIndicatorData.push(iData);
       }
 
       arr.chart.data = newChartData;
+      arr.onchart[0].data = newIndicatorData;
       this.chart = arr;
-      console.log(this.chart);
+      console.log("arr", arr)
       this.forceRerender();
     },
     onResize() {
@@ -70,9 +82,9 @@ export default {
     },
   },
   beforeMount() {
-    eventBus.$on("chartData", (data, asset) => {
+    eventBus.$on("chartData", (data, asset, indicators) => {
       this.asset = asset;
-      this.parseJson(data);
+      this.parseJson(data, indicators);
     });
   },
   mounted() {
