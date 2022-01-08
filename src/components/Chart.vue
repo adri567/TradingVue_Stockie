@@ -31,7 +31,7 @@ export default {
       width: window.innerWidth,
       height: window.innerHeight,
       rerenderChart: true,
-      asset: "",
+      asset: "AAPL",
     };
   },
   methods: {

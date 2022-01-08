@@ -163,7 +163,7 @@ export default {
   },
   methods: {
     deliverChartData() {
-      eventBus.$emit("chartData", this.chartData, this.asset, this.indicators);
+      eventBus.$emit("chartData", this.chartData, this.assetUppercase, this.indicators);
     },
     getData() {
       if (this.assetUppercase == "") {
