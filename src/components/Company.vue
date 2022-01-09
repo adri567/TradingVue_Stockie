@@ -130,7 +130,7 @@ export default {
       period: "3",
       loading: false,
       loadingTime: 0,
-      maxLoadingTime: 3,
+      maxLoadingTime: 2,
     };
   },
   computed: {

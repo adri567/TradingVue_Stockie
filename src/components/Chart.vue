@@ -17,7 +17,7 @@
 import TradingVue from "trading-vue-js";
 import Data from "../data/data.json";
 import eventBus from "../main.js";
-import Overlay from '../Overlay.vue'
+import Overlay from '../Overlays/Overlay.vue'
 
 export default {
   name: "TradingView",

@@ -20,7 +20,7 @@
             letter-spacing: 0.1em;
           "
         >
-          Chart
+          <router-link to="/" class="navbar-style">Chart</router-link>
         </div>
       </div>
       <div
@@ -54,7 +54,7 @@
             letter-spacing: 0.1em;
           "
         >
-          About Us
+          <router-link to="/AboutUs" class="navbar-style">About Us</router-link>
         </div>
       </div>
     </div>
@@ -69,4 +69,8 @@ export default {
 </script>
 
 <style scoped>
+.navbar-style {
+  color: white;
+  text-decoration: none;
+}
 </style>
