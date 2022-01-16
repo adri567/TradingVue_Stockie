@@ -122,7 +122,7 @@ export default {
     return {
       chartData: [],
       indicators: [],
-      asset: "AAPL",
+      asset: "",
       availableAssets: ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN"],
       assetInfoHeight: "60%",
       assetInformation: "",
@@ -234,7 +234,11 @@ export default {
   beforeMount() {
     eventBus.$on("period", (period) => {
       this.period = period;
-      this.getAssetData(this.asset, this.period);
+      if (this.asset == "") {
+        this.getAssetData("AAPL", this.period);
+      } else {
+        this.getAssetData(this.asset, this.period);
+      }
     });
   },
 };
