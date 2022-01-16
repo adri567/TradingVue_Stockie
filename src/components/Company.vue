@@ -7,8 +7,10 @@
         </b-input-group-prepend>
         <b-form-input
           type="search"
+          value="AAPL"
           v-model="asset"
-          placeholder="Search asset"
+          placeholder="AAPL"
+          style="text-transform:uppercase"
         ></b-form-input>
       </b-input-group>
     </div>
@@ -120,7 +122,7 @@ export default {
     return {
       chartData: [],
       indicators: [],
-      asset: "",
+      asset: "AAPL",
       availableAssets: ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN"],
       assetInfoHeight: "60%",
       assetInformation: "",
@@ -232,6 +234,7 @@ export default {
   beforeMount() {
     eventBus.$on("period", (period) => {
       this.period = period;
+      this.getAssetData(this.asset, this.period);
     });
   },
 };

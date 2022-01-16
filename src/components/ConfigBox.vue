@@ -2,22 +2,7 @@
   <div class="configbox-style">
     <div class="indicator">
       <b-button class="buttonOpinion" style="border-radius: 10%"
-        >Button</b-button
-      >
-      <b-button
-        class="buttonOpinion"
-        style="margin-left: 1%; border-radius: 10%"
-        >Button</b-button
-      >
-      <b-button
-        class="buttonOpinion"
-        style="margin-left: 1%; border-radius: 10%"
-        >Button</b-button
-      >
-      <b-button
-        class="buttonOpinion"
-        style="margin-left: 1%; border-radius: 10%"
-        >Button</b-button
+        >Simple Moving Average</b-button
       >
     </div>
     <div class="opinion">

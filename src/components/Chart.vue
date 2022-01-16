@@ -2,7 +2,7 @@
   <div class="chartview-sytle">
     <div class="tradingchart">
       <trading-vue
-        v-if="rerenderChart"
+        :key="rerenderChart"
         :data="chart"
         :width="width"
         :height="height"
@@ -30,20 +30,13 @@ export default {
       overlays: [Overlay],
       width: window.innerWidth,
       height: window.innerHeight,
-      rerenderChart: true,
+      rerenderChart: 0,
       asset: "AAPL",
     };
   },
   methods: {
-    // https://michaelnthiessen.com/force-re-render/
     forceRerender() {
-      // Remove my-component from the DOM
-      this.rerenderChart = false;
-
-      this.$nextTick(() => {
-        // Add the component back in
-        this.rerenderChart = true;
-      });
+      this.rerenderChart += 1;
     },
     parseJson(chartData, indicators) {
       var json =
@@ -73,7 +66,6 @@ export default {
       arr.chart.data = newChartData;
       arr.onchart[0].data = newIndicatorData;
       this.chart = arr;
-      console.log("arr", arr)
       this.forceRerender();
     },
     onResize() {

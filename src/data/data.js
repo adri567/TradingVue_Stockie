@@ -23,8 +23,8 @@ async function getChartDataFromAsset(asset, period) {
             indicators = await axios('http://185.188.250.67:4567/assets/' + asset + '/indicators/sma/days/' + period + '');
             break;
         default:
-            chartData = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/3');
-            indicators = await axios('http://185.188.250.67:4567/assets/' + asset + '/indicators/sma/days/3');
+            chartData = await axios('http://185.188.250.67:4567/assets/' + asset + '/price/days/5');
+            indicators = await axios('http://185.188.250.67:4567/assets/' + asset + '/indicators/sma/days/5');
             break;
     }
 
